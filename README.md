@@ -1,2 +1,2 @@
-# sf5-recipe
+# Recipe project
 Recipe project - Spring framework 5 
