@@ -23,8 +23,8 @@ public class Recipe {
     private String url;
     private String directions;
 
-    //  @todo enum must define
-    // private Enum difficulty;
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
 
     @Lob
     private Byte[] image;
@@ -115,5 +115,13 @@ public class Recipe {
 
     public void setImage(Byte[] image) {
         this.image = image;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 }
