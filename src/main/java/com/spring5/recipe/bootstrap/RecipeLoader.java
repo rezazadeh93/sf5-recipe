@@ -31,8 +31,10 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
     }
 
     private List<Recipe> getRecipe() {
+        // to return a list of recipes
         List<Recipe> recipes = new ArrayList<>(2);
 
+        //  get units of measure from repositories
         Optional<UnitOfMeasure> uomPiece = unitOfMeasureRepository.findByDescription("Piece");
         if (uomPiece.isEmpty()) {
             throw new RuntimeException("Expected UOM Not Found");
@@ -70,6 +72,7 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
         UnitOfMeasure uomPinchUOM = uomPinch.get();
         UnitOfMeasure uomClovesUOM = uomCloves.get();
 
+        //  get categories from repositories
         Optional<Category> americanCat = categoryRepository.findByDescription("American");
         if (americanCat.isEmpty()) {
             throw new RuntimeException("Expected UOM Not Found");
@@ -83,6 +86,7 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
         Category americanGet = americanCat.get();
         Category mexicanGet = mexicanCat.get();
 
+        //  taco chicken recipe
         Recipe recipeChicken = new Recipe();
         recipeChicken.setDescription("Spicy Grilled Chicken Tacos Recipe");
         recipeChicken.setPrepTime(20);
@@ -92,7 +96,7 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
         recipeChicken.setSource("Simply Recipes");
         recipeChicken.setDifficulty(Difficulty.MODERATE);
 
-        Notes noteChicken = new Notes(recipeChicken, "Today’s tacos are more purposeful – a deliberate meal instead of a secretive midnight snack!\n" +
+        Notes noteChicken = new Notes("Today’s tacos are more purposeful – a deliberate meal instead of a secretive midnight snack!\n" +
                 "\n" +
                 "\n" +
                 "First, I marinate the chicken briefly in a spicy paste of ancho chile powder, oregano, cumin, and sweet orange juice while the grill is heating. You can also use this time to prepare the taco toppings.\n" +
@@ -106,6 +110,9 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
                 "Everyone can grab a warm tortilla from the pile and make their own tacos just they way they like them.\n" +
                 "\n" +
                 "You could also easily double or even triple this recipe for a larger party. A taco and a cold beer on a warm day? Now that’s living!");
+
+        //  the relationship between note and recipe is bi-directional
+        //  and this method handle both directions
         recipeChicken.setNotes(noteChicken);
 
         recipeChicken.setDirections("1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
@@ -124,49 +131,33 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
                 "\n" +
                 "5 Assemble the tacos: Slice the chicken into strips. On each tortilla, place a small handful of arugula. Top with chicken slices, sliced avocado, radishes, tomatoes, and onion slices. Drizzle with the thinned sour cream. Serve with lime wedges.");
 
-        Ingredient ingredientChicken1 = new Ingredient("ancho chili powder", BigDecimal.valueOf(2), recipeChicken, uomPieceUOM);
-        recipeChicken.getIngredients().add(ingredientChicken1);
-        Ingredient ingredientChicken2 = new Ingredient("dried oregano", BigDecimal.valueOf(1), recipeChicken, uomTablespoonUOM);
-        recipeChicken.getIngredients().add(ingredientChicken2);
-        Ingredient ingredientChicken3 = new Ingredient("dried cumin", BigDecimal.valueOf(1), recipeChicken, uomTeaspoonUOM);
-        recipeChicken.getIngredients().add(ingredientChicken3);
-        Ingredient ingredientChicken4 = new Ingredient("sugar", BigDecimal.valueOf(1), recipeChicken, uomTeaspoonUOM);
-        recipeChicken.getIngredients().add(ingredientChicken4);
-        Ingredient ingredientChicken5 = new Ingredient("salt", BigDecimal.valueOf(.5), recipeChicken, uomTeaspoonUOM);
-        recipeChicken.getIngredients().add(ingredientChicken5);
-        Ingredient ingredientChicken6 = new Ingredient("garlic, finely chopped", BigDecimal.valueOf(1), recipeChicken, uomClovesUOM);
-        recipeChicken.getIngredients().add(ingredientChicken6);
-        Ingredient ingredientChicken7 = new Ingredient("finely grated orange zest", BigDecimal.valueOf(1), recipeChicken, uomTablespoonUOM);
-        recipeChicken.getIngredients().add(ingredientChicken7);
-        Ingredient ingredientChicken8 = new Ingredient("fresh-squeezed orange juice", BigDecimal.valueOf(3), recipeChicken, uomTablespoonUOM);
-        recipeChicken.getIngredients().add(ingredientChicken8);
-        Ingredient ingredientChicken9 = new Ingredient("olive oil", BigDecimal.valueOf(2), recipeChicken, uomTablespoonUOM);
-        recipeChicken.getIngredients().add(ingredientChicken9);
-        Ingredient ingredientChicken10 = new Ingredient("skinless, boneless chicken thighs", BigDecimal.valueOf(6), recipeChicken, uomPieceUOM);
-        recipeChicken.getIngredients().add(ingredientChicken10);
-        Ingredient ingredientChicken11 = new Ingredient("small corn tortillas", BigDecimal.valueOf(8), recipeChicken, uomPieceUOM);
-        recipeChicken.getIngredients().add(ingredientChicken11);
-        Ingredient ingredientChicken12 = new Ingredient("packed baby arugula", BigDecimal.valueOf(3), recipeChicken, uomCupUOM);
-        recipeChicken.getIngredients().add(ingredientChicken12);
-        Ingredient ingredientChicken13 = new Ingredient("medium ripe avocados, sliced", BigDecimal.valueOf(2), recipeChicken, uomPieceUOM);
-        recipeChicken.getIngredients().add(ingredientChicken13);
-        Ingredient ingredientChicken14 = new Ingredient("radishes, thinly sliced", BigDecimal.valueOf(4), recipeChicken, uomPieceUOM);
-        recipeChicken.getIngredients().add(ingredientChicken14);
-        Ingredient ingredientChicken15 = new Ingredient("cherry tomatoes, halved", BigDecimal.valueOf(1), recipeChicken, uomCupUOM);
-        recipeChicken.getIngredients().add(ingredientChicken15);
-        Ingredient ingredientChicken16 = new Ingredient("red onion, thinly sliced", BigDecimal.valueOf(.25), recipeChicken, uomPieceUOM);
-        recipeChicken.getIngredients().add(ingredientChicken16);
-        Ingredient ingredientChicken17 = new Ingredient("Roughly chopped cilantro", BigDecimal.valueOf(.25), recipeChicken, uomCupUOM);
-        recipeChicken.getIngredients().add(ingredientChicken17);
-        Ingredient ingredientChicken18 = new Ingredient("sour cream thinned with 1/4 cup milk", BigDecimal.valueOf(.5), recipeChicken, uomCupUOM);
-        recipeChicken.getIngredients().add(ingredientChicken18);
-        Ingredient ingredientChicken19 = new Ingredient("lime, cut into wedges", BigDecimal.valueOf(1), recipeChicken, uomPieceUOM);
-        recipeChicken.getIngredients().add(ingredientChicken19);
+        //  this helper method handle both bi-directional relationship
+        recipeChicken.addIngredient(new Ingredient("ancho chili powder", BigDecimal.valueOf(2), uomPieceUOM));
+        recipeChicken.addIngredient(new Ingredient("dried oregano", BigDecimal.valueOf(1), uomTablespoonUOM));
+        recipeChicken.addIngredient(new Ingredient("dried cumin", BigDecimal.valueOf(1), uomTeaspoonUOM));
+        recipeChicken.addIngredient(new Ingredient("sugar", BigDecimal.valueOf(1), uomTeaspoonUOM));
+        recipeChicken.addIngredient(new Ingredient("salt", BigDecimal.valueOf(.5), uomTeaspoonUOM));
+        recipeChicken.addIngredient(new Ingredient("garlic, finely chopped", BigDecimal.valueOf(1), uomClovesUOM));
+        recipeChicken.addIngredient(new Ingredient("finely grated orange zest", BigDecimal.valueOf(1), uomTablespoonUOM));
+        recipeChicken.addIngredient(new Ingredient("fresh-squeezed orange juice", BigDecimal.valueOf(3), uomTablespoonUOM));
+        recipeChicken.addIngredient(new Ingredient("olive oil", BigDecimal.valueOf(2), uomTablespoonUOM));
+        recipeChicken.addIngredient(new Ingredient("skinless, boneless chicken thighs", BigDecimal.valueOf(6), uomPieceUOM));
+        recipeChicken.addIngredient(new Ingredient("small corn tortillas", BigDecimal.valueOf(8), uomPieceUOM));
+        recipeChicken.addIngredient(new Ingredient("packed baby arugula", BigDecimal.valueOf(3), uomCupUOM));
+        recipeChicken.addIngredient(new Ingredient("medium ripe avocados, sliced", BigDecimal.valueOf(2), uomPieceUOM));
+        recipeChicken.addIngredient(new Ingredient("radishes, thinly sliced", BigDecimal.valueOf(4), uomPieceUOM));
+        recipeChicken.addIngredient(new Ingredient("cherry tomatoes, halved", BigDecimal.valueOf(1), uomCupUOM));
+        recipeChicken.addIngredient(new Ingredient("red onion, thinly sliced", BigDecimal.valueOf(.25), uomPieceUOM));
+        recipeChicken.addIngredient(new Ingredient("Roughly chopped cilantro", BigDecimal.valueOf(.25), uomCupUOM));
+        recipeChicken.addIngredient(new Ingredient("sour cream thinned with 1/4 cup milk", BigDecimal.valueOf(.5), uomCupUOM));
+        recipeChicken.addIngredient(new Ingredient("lime, cut into wedges", BigDecimal.valueOf(1), uomPieceUOM));
 
         recipeChicken.getCategories().add(americanGet);
 
+        //  to return recipes list
         recipes.add(recipeChicken);
 
+        //  guacamole recipe
         Recipe recipeGuacamole = new Recipe();
         recipeGuacamole.setDescription("Perfect Guacamole");
         recipeGuacamole.setPrepTime(10);
@@ -176,7 +167,9 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
         recipeGuacamole.setSource("Simply Recipes");
         recipeGuacamole.setDifficulty(Difficulty.EASY);
 
-        Notes noteGuacamole = new Notes(recipeGuacamole, "The word “guacamole”, and the dip, are both originally from Mexico, where avocados have been cultivated for thousands of years. The name is derived from two Aztec Nahuatl words—ahuacatl (avocado) and molli (sauce).");
+        Notes noteGuacamole = new Notes("The word “guacamole”, and the dip, are both originally from Mexico, where avocados have been cultivated for thousands of years. The name is derived from two Aztec Nahuatl words—ahuacatl (avocado) and molli (sauce).");
+
+        //  this method handle both bi-directional relationship
         recipeGuacamole.setNotes(noteGuacamole);
 
         recipeGuacamole.setDirections(
@@ -189,30 +182,22 @@ public class RecipeLoader implements ApplicationListener<ContextRefreshedEvent> 
                         "4 Serve: Serve immediately, or if making a few hours ahead, place plastic wrap on the surface of the guacamole and press down to cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve."
         );
 
-        Ingredient ingredientGuacamole1 = new Ingredient("ripe avocados", BigDecimal.valueOf(2), recipeGuacamole, uomPieceUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole1);
-        Ingredient ingredientGuacamole2 = new Ingredient("salt, more to taste", BigDecimal.valueOf(.25), recipeGuacamole, uomTeaspoonUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole2);
-        Ingredient ingredientGuacamole3 = new Ingredient("fresh lime juice or lemon juice", BigDecimal.valueOf(1), recipeGuacamole, uomTablespoonUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole3);
-        Ingredient ingredientGuacamole4 = new Ingredient("minced red onion or thinly sliced green onion", BigDecimal.valueOf(.25), recipeGuacamole, uomCupUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole4);
-        Ingredient ingredientGuacamole5 = new Ingredient("serrano chiles, stems and seeds removed, minced", BigDecimal.valueOf(2), recipeGuacamole, uomPieceUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole5);
-        Ingredient ingredientGuacamole6 = new Ingredient("cilantro (leaves and tender stems), finely chopped", BigDecimal.valueOf(2), recipeGuacamole, uomTablespoonUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole6);
-        Ingredient ingredientGuacamole7 = new Ingredient("freshly grated black pepper", BigDecimal.valueOf(1), recipeGuacamole, uomPinchUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole7);
-        Ingredient ingredientGuacamole8 = new Ingredient("ripe tomato, seeds and pulp removed, chopped", BigDecimal.valueOf(.5), recipeGuacamole, uomPieceUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole8);
-        Ingredient ingredientGuacamole9 = new Ingredient("Red radishes or jicama, to garnish", BigDecimal.valueOf(5), recipeGuacamole, uomPieceUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole9);
-        Ingredient ingredientGuacamole10 = new Ingredient("Tortilla chips, to serve", BigDecimal.valueOf(2), recipeGuacamole, uomPieceUOM);
-        recipeGuacamole.getIngredients().add(ingredientGuacamole10);
+        //  this helper method handle both bi-directional relationship
+        recipeGuacamole.addIngredient(new Ingredient("ripe avocados", BigDecimal.valueOf(2), uomPieceUOM));
+        recipeGuacamole.addIngredient(new Ingredient("salt, more to taste", BigDecimal.valueOf(.25), uomTeaspoonUOM));
+        recipeGuacamole.addIngredient(new Ingredient("fresh lime juice or lemon juice", BigDecimal.valueOf(1), uomTablespoonUOM));
+        recipeGuacamole.addIngredient(new Ingredient("minced red onion or thinly sliced green onion", BigDecimal.valueOf(.25), uomCupUOM));
+        recipeGuacamole.addIngredient(new Ingredient("serrano chiles, stems and seeds removed, minced", BigDecimal.valueOf(2), uomPieceUOM));
+        recipeGuacamole.addIngredient(new Ingredient("cilantro (leaves and tender stems), finely chopped", BigDecimal.valueOf(2), uomTablespoonUOM));
+        recipeGuacamole.addIngredient(new Ingredient("freshly grated black pepper", BigDecimal.valueOf(1), uomPinchUOM));
+        recipeGuacamole.addIngredient(new Ingredient("ripe tomato, seeds and pulp removed, chopped", BigDecimal.valueOf(.5), uomPieceUOM));
+        recipeGuacamole.addIngredient(new Ingredient("Red radishes or jicama, to garnish", BigDecimal.valueOf(5), uomPieceUOM));
+        recipeGuacamole.addIngredient(new Ingredient("Tortilla chips, to serve", BigDecimal.valueOf(2), uomPieceUOM));
 
         recipeGuacamole.getCategories().add(americanGet);
         recipeGuacamole.getCategories().add(mexicanGet);
 
+        //  to return recipes list
         recipes.add(recipeGuacamole);
 
         return recipes;
