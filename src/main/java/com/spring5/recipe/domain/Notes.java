@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 public class Notes {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -13,6 +14,13 @@ public class Notes {
 
     @Lob
     private String recipeNote;
+
+    public Notes() {
+    }
+
+    public Notes(String recipeNote) {
+        this.recipeNote = recipeNote;
+    }
 
     public Long getId() {
         return id;
