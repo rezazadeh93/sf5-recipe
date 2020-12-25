@@ -5,6 +5,7 @@ import com.spring5.recipe.repositories.RecipeRepository;
 import com.spring5.recipe.service.RecipeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -34,13 +35,25 @@ class IndexControllerTest {
 
     @Test
     void getIndex() {
+        // given
         Set<Recipe> recipeSet = new HashSet<>();
         recipeSet.add(new Recipe());
 
+        Recipe recipeTemp = new Recipe();
+        recipeTemp.setId(2L);
+        recipeSet.add(recipeTemp);
+
+        when(recipeService.getList()).thenReturn(recipeSet);
+
+        ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
+
+        // when
         String verifyString = indexController.getIndex(model);
 
+        // then
         assertEquals("index", verifyString);
         verify(recipeService, times(1)).getList();
-        verify(model, times(1)).addAttribute(eq("recipes"), anySet());
+        verify(model, times(1)).addAttribute(eq("recipes"), argumentCaptor.capture());
+        assertEquals(2, argumentCaptor.getValue().size());
     }
 }
