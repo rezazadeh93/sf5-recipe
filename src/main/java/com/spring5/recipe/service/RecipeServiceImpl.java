@@ -19,7 +19,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Set<Recipe> getList() {
-        log.debug("logging in servive file: @getList method");
+        log.debug("logging service: @getList method");
 
         Set<Recipe> recipes = new HashSet<>();
         recipeRepository.findAll().forEach(recipes::add);
