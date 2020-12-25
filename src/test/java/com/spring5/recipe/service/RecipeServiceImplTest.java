@@ -29,7 +29,7 @@ class RecipeServiceImplTest {
     @Test
     void getList() {
         Recipe recipe = new Recipe();
-        HashSet<Recipe> recipeData = new HashSet<>();
+        Set<Recipe> recipeData = new HashSet<>();
         recipeData.add(recipe);
 
         when(recipeRepository.findAll()).thenReturn(recipeData);
