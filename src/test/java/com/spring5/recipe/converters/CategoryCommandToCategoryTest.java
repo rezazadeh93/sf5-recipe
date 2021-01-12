@@ -19,26 +19,28 @@ class CategoryCommandToCategoryTest {
     }
 
     @Test
-    void nullableTest() {
+    void testNullObject() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    void notNullTest() {
+    void testEmptyObject() {
         assertNotNull(converter.convert(new CategoryCommand()));
     }
 
     @Test
     void convert() {
+        //given
         CategoryCommand source = new CategoryCommand();
         source.setId(ID_VALUE);
         source.setDescription(DESCRIPTION);
 
+        //when
         Category saved = converter.convert(source);
 
-        assertNotNull(saved);
+        //then
         assertEquals(ID_VALUE, saved.getId());
         assertEquals(DESCRIPTION, saved.getDescription());
-
     }
+
 }

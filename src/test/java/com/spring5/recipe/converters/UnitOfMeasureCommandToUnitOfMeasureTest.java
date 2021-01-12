@@ -16,28 +16,34 @@ class UnitOfMeasureCommandToUnitOfMeasureTest {
     @BeforeEach
     void setUp() {
         converter = new UnitOfMeasureCommandToUnitOfMeasure();
+
     }
-    
+
     @Test
-    void nullParameterTest() {
+    void testNullParamter() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    void emptyObjectTest() {
+    void testEmptyObject() {
         assertNotNull(converter.convert(new UnitOfMeasureCommand()));
     }
 
     @Test
     void convert() {
+        //given
         UnitOfMeasureCommand source = new UnitOfMeasureCommand();
         source.setId(ID_VALUE);
         source.setDescription(DESCRIPTION);
 
+        //when
         UnitOfMeasure uom = converter.convert(source);
 
+        //then
         assertNotNull(uom);
         assertEquals(ID_VALUE, uom.getId());
         assertEquals(DESCRIPTION, uom.getDescription());
+
     }
+
 }

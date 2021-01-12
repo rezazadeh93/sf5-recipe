@@ -1,11 +1,7 @@
 package com.spring5.recipe.converters;
 
-import com.spring5.recipe.commands.CategoryCommand;
-import com.spring5.recipe.commands.IngredientCommand;
 import com.spring5.recipe.commands.RecipeCommand;
 import com.spring5.recipe.domain.Category;
-import com.spring5.recipe.domain.Ingredient;
-import com.spring5.recipe.domain.Notes;
 import com.spring5.recipe.domain.Recipe;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
@@ -17,16 +13,17 @@ import java.util.Set;
 
 @Component
 public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
-    private final IngredientCommandToIngredient ingredientCommandToIngredient;
-    private final NotesCommandToNotes notesCommandToNotes;
-    private final CategoryCommandToCategory categoryCommandToCategory;
 
-    public RecipeCommandToRecipe(IngredientCommandToIngredient ingredientCommandToIngredient,
-                                 NotesCommandToNotes notesCommandToNotes,
-                                 CategoryCommandToCategory categoryCommandToCategory) {
-        this.ingredientCommandToIngredient = ingredientCommandToIngredient;
-        this.notesCommandToNotes = notesCommandToNotes;
-        this.categoryCommandToCategory = categoryCommandToCategory;
+    private final CategoryCommandToCategory categoryConverter;
+    private final IngredientCommandToIngredient ingredientConverter;
+    private final NotesCommandToNotes notesConverter;
+
+    public RecipeCommandToRecipe(IngredientCommandToIngredient ingredientConverter,
+                                 NotesCommandToNotes notesConverter,
+                                 CategoryCommandToCategory categoryConverter) {
+        this.categoryConverter = categoryConverter;
+        this.ingredientConverter = ingredientConverter;
+        this.notesConverter = notesConverter;
     }
 
     @Synchronized
@@ -46,28 +43,22 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
         recipe.setSource(source.getSource());
         recipe.setUrl(source.getUrl());
         recipe.setDirections(source.getDirections());
-
-        Set<Ingredient> ingredients = new HashSet<>();
-        for (IngredientCommand ingredient: source.getIngredients()) {
-            ingredients.add(ingredientCommandToIngredient.convert(ingredient));
-        }
-
-        recipe.setIngredients(ingredients);
-
         recipe.setDifficulty(source.getDifficulty());
 
-        Notes notes = notesCommandToNotes.convert(source.getNotes());
-        if (notes == null) {
-            notes = new Notes();
-        }
+        recipe.setNotes(notesConverter.convert(source.getNotes()));
 
-        recipe.setNotes(notes);
+        if (source.getIngredients() != null && source.getIngredients().size() > 0) {
+            source.getIngredients().forEach(ingredientCommand -> {
+                recipe.getIngredients().add(ingredientConverter.convert(ingredientCommand));
+            });
+        }
 
         Set<Category> categories = new HashSet<>();
-        for (CategoryCommand category: source.getCategories()) {
-            categories.add(categoryCommandToCategory.convert(category));
+        if (source.getCategories() != null && source.getCategories().size() > 0) {
+            source.getCategories().forEach(categoryCommand -> {
+                categories.add(categoryConverter.convert(categoryCommand));
+            });
         }
-
         recipe.setCategories(categories);
 
         return recipe;

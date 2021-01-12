@@ -19,23 +19,26 @@ class NotesCommandToNotesTest {
     }
 
     @Test
-    void nullableTest() {
+    void testNullParameter() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    void notNullTest() {
+    void testEmptyObject() {
         assertNotNull(converter.convert(new NotesCommand()));
     }
 
     @Test
     void convert() {
+        //given
         NotesCommand source = new NotesCommand();
         source.setId(ID_VALUE);
         source.setRecipeNote(DESCRIPTION);
 
+        //when
         Notes note = converter.convert(source);
 
+        //then
         assertNotNull(note);
         assertEquals(ID_VALUE, note.getId());
         assertEquals(DESCRIPTION, note.getRecipeNote());

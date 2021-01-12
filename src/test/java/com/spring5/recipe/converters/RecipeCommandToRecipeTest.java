@@ -12,11 +12,11 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RecipeCommandToRecipeTest {
-    private final static Long ID_VALUE = 1L;
-    private final static String DESCRIPTION = "recipe description is here";
-    public static final int PREP_TIME = 15;
-    public static final int COOK_TIME = 20;
-    public static final int SERVINGS = 4;
+    public static final  Long ID_VALUE = 1L;
+    public static final  String DESCRIPTION = "recipe description is here";
+    public static final Integer PREP_TIME = 15;
+    public static final Integer COOK_TIME = 20;
+    public static final Integer SERVINGS = 4;
     public static final String EXAMPLE = "example";
     public static final String URL_VALUE = "http://www.example.com";
     public static final String DIRECTION = "this is just test direction, this is just test direction, this is just test direction";
@@ -33,21 +33,23 @@ class RecipeCommandToRecipeTest {
     void setUp() {
         converter = new RecipeCommandToRecipe(
                 new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure()),
-                new NotesCommandToNotes(), new CategoryCommandToCategory());
+                new NotesCommandToNotes(),
+                new CategoryCommandToCategory());
     }
 
     @Test
-    void nullableTest() {
+    void testNullObject() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    void notNullTest() {
+    void testEmptyObject() {
         assertNotNull(converter.convert(new RecipeCommand()));
     }
 
     @Test
     void convert() {
+        //given
         RecipeCommand source = new RecipeCommand();
         source.setId(ID_VALUE);
         source.setDescription(DESCRIPTION);
@@ -59,37 +61,33 @@ class RecipeCommandToRecipeTest {
         source.setDirections(DIRECTION);
         source.setDifficulty(DIFFICULTY);
 
-        IngredientCommand ingredientTemp = new IngredientCommand();
-        ingredientTemp.setId(INGREDIENT_ID);
-        ingredientTemp.setUom(new UnitOfMeasureCommand());
-
-        IngredientCommand ingredientTemp1 = new IngredientCommand();
-        ingredientTemp.setDescription(INGREDIENT_DESC);
-        ingredientTemp.setUom(new UnitOfMeasureCommand());
-
-        Set<IngredientCommand> ingredientCommands = new HashSet<>();
-        ingredientCommands.add(ingredientTemp);
-        ingredientCommands.add(ingredientTemp1);
-        source.setIngredients(ingredientCommands);
-
         NotesCommand notesCommand = new NotesCommand();
         notesCommand.setId(NOTE_ID);
         source.setNotes(notesCommand);
 
-        CategoryCommand categoryCommand = new CategoryCommand();
-        categoryCommand.setId(CATEGORY_ID);
+        IngredientCommand ingredientTemp1 = new IngredientCommand();
+        ingredientTemp1.setId(INGREDIENT_ID);
+        IngredientCommand ingredientTemp2 = new IngredientCommand();
+        ingredientTemp1.setDescription(INGREDIENT_DESC);
 
+        Set<IngredientCommand> ingredientCommands = new HashSet<>();
+        ingredientCommands.add(ingredientTemp1);
+        ingredientCommands.add(ingredientTemp2);
+        source.setIngredients(ingredientCommands);
+
+        CategoryCommand categoryCommand1 = new CategoryCommand();
+        categoryCommand1.setId(CATEGORY_ID);
         CategoryCommand categoryCommand2 = new CategoryCommand();
-        categoryCommand.setDescription(CATEGORY_DESC);
+        categoryCommand2.setDescription(CATEGORY_DESC);
 
-        Set<CategoryCommand> categoryCommandSet = new HashSet<>();
-        categoryCommandSet.add(categoryCommand);
-        categoryCommandSet.add(categoryCommand2);
+        source.getCategories().add(categoryCommand1);
+        source.getCategories().add(categoryCommand2);
 
-        source.setCategories(categoryCommandSet);
 
+        //when
         Recipe recipeSaved = converter.convert(source);
 
+        // then
         assertNotNull(recipeSaved);
         assertNotNull(recipeSaved.getIngredients());
         assertNotNull(recipeSaved.getNotes());
