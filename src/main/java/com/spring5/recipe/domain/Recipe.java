@@ -50,7 +50,7 @@ public class Recipe {
             this.notes = notes;
 
             if (notes.getRecipe() == null) {
-                notes.setRecipe(this);
+//                notes.setRecipe(this);
             }
         }
     }
@@ -62,4 +62,5 @@ public class Recipe {
 
         return this;
     }
+
 }

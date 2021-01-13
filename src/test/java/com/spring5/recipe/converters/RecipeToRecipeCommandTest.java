@@ -23,7 +23,7 @@ class RecipeToRecipeCommandTest {
     public static final String DIRECTION = "this is just test direction, this is just test direction, this is just test direction";
     public static final Difficulty DIFFICULTY = Difficulty.HARD;
     public static final Long CATEGORY_ID1 = 6L;
-    public static final Long CATEGORY_ID2 = 6L;
+    public static final Long CATEGORY_ID2 = 7L;
     public static final Long NOTE_ID = 5L;
     public static final Long INGREDIENT_ID1 = 3L;
     public static final Long INGREDIENT_ID2 = 6L;

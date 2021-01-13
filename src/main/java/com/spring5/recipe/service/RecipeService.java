@@ -1,5 +1,6 @@
 package com.spring5.recipe.service;
 
+import com.spring5.recipe.commands.RecipeCommand;
 import com.spring5.recipe.domain.Recipe;
 
 import java.util.Optional;
@@ -10,4 +11,5 @@ public interface RecipeService {
 
     Recipe findById(Long ID);
 
+    RecipeCommand saveRecipeCommand(RecipeCommand command);
 }
