@@ -15,21 +15,20 @@
             src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
             crossorigin="anonymous"></script>
 </head>
-<body class="pt-5 mt-3 bg-light">
+<body class="pt-5 mt-3 pb-4 bg-light">
 <div class="container">
-    <!--/*@thymesVar id="recipe" type="com.spring5.recipe.domain.Recipe"*/-->
     <form th:object="${recipe}" th:action="@{/recipe}">
         <input type="hidden" th:field="*{id}">
         <div class="row">
             <div class="col-12 col-lg-5 mb-5">
                 <div class="card">
                     <div class="card-header bg-info text-white">
-                        <h1 class="h2 mb-0" th:text="${recipe.description}">Recipe Title goes here</h1>
+                        <h1 class="h2 mb-0">New Recipe Title</h1>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="exampleFormControlInput23235">description edit</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput23235"
+                            <label for="exampleFormControlInput23235">New description</label>
+                            <input type="text" class="form-control" id="exampleFormControlInput23235"
                                    placeholder="name@example.com" th:field="*{description}">
                         </div>
                         <ul class="list-inline">
@@ -82,17 +81,17 @@
                                 <div class="col-3 text-right">
                                     <label for="exampleFormControlInput22323">Serving</label>
                                 </div>
-                                <div class="col-9" th:text="${recipe.servings}">
-                                    <input type="email" class="form-control" id="exampleFormControlInput22323"
-                                           placeholder="name@example.com" th:field="*{prepTime}">
+                                <div class="col-9">
+                                    <input type="text" class="form-control" id="exampleFormControlInput22323"
+                                           placeholder="name@example.com" th:field="*{servings}">
                                 </div>
                             </li>
                             <li class="w-100 mb-2 row">
                                 <div class="col-3 text-right">
                                     <label for="exampleFormControlInput2343">Prep time</label>
                                 </div>
-                                <div class="col-9" th:text="${(recipe.prepTime) + ' Min'}">
-                                    <input type="email" class="form-control" id="exampleFormControlInput2343"
+                                <div class="col-9">
+                                    <input type="text" class="form-control" id="exampleFormControlInput2343"
                                            placeholder="name@example.com" th:field="*{prepTime}">
                                 </div>
                             </li>
@@ -100,8 +99,8 @@
                                 <div class="col-3 text-right">
                                     <label for="exampleFormControlInput112">Cook time</label>
                                 </div>
-                                <div class="col-9" th:text="${recipe.cookTime} + ' Min'">
-                                    <input type="email" class="form-control" id="exampleFormControlInput112"
+                                <div class="col-9">
+                                    <input type="text" class="form-control" id="exampleFormControlInput112"
                                            placeholder="name@example.com" th:field="*{cookTime}">
                                 </div>
                             </li>
@@ -109,10 +108,9 @@
                                 <div class="col-3 text-right">
                                     <label for="exampleFormControlSelect2326">Difficulty</label>
                                 </div>
-                                <div class="col-9" th:text="${recipe.difficulty}">
+                                <div class="col-9">
                                     <select class="form-control"
-                                            id="exampleFormControlSelect2326"
-                                            th:field="*{difficulty}">
+                                            id="exampleFormControlSelect2326">
                                         <option>1</option>
                                         <option>2</option>
                                     </select>
@@ -122,10 +120,8 @@
                                 <div class="col-3 text-right">
                                     <label for="exampleFormControlInput12323">Source</label>
                                 </div>
-                                <div class="col-9" th:text="${recipe.source}">
-                                    <!--@todo checking if input replaced by text-->
-
-                                    <input type="email" class="form-control" id="exampleFormControlInput12323"
+                                <div class="col-9">
+                                    <input type="text" class="form-control" id="exampleFormControlInput12323"
                                            placeholder="name@example.com" th:field="*{source}">
                                 </div>
                             </li>
@@ -134,7 +130,7 @@
                                     <label for="exampleFormControlInput1">URL</label>
                                 </div>
                                 <div class="col-9">
-                                    <input type="email" class="form-control" id="exampleFormControlInput1"
+                                    <input type="text" class="form-control" id="exampleFormControlInput1"
                                            placeholder="name@example.com" th:field="*{url}">
                                 </div>
                             </li>
@@ -162,9 +158,12 @@
                     <div class="card-body">
                         <label for="exampleFormControlTextarea1">Notes</label>
                         <textarea class="form-control gray-700" id="exampleFormControlTextarea1"
-                                  rows="3" th:field=""></textarea>
+                                  rows="3" th:field="*{notes.recipeNote}"></textarea>
                     </div>
                 </div>
+            </div>
+            <div class="col-12 mt-3">
+                <button class="btn btn-primary">Save recipe</button>
             </div>
         </div>
     </form>
