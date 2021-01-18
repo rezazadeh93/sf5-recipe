@@ -52,7 +52,7 @@
                             <td th:text="${recipe.id}">3</td>
                             <td th:text="${recipe.description}">Recipe title 3</td>
                             <td>
-                                <a class="btn btn-secondary" th:href="@{'/recipe/show/' + ${recipe.id}}" href="#">view</a>
+                                <a class="btn btn-secondary" th:href="@{'/recipe/' + ${recipe.id} + '/show'}" href="#">view</a>
                             </td>
                         </tr>
                     </table>

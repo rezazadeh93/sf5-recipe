@@ -26,7 +26,7 @@
                 </li>
                 <li class="list-inline-item" th:each="category: ${recipe.categories}">
                     <a class="badge badge-pill badge-primary px-3 py-2 font-weight-normal"
-                       href="#" th:href="@{'/category/show/' + ${category.id}}"
+                       href="#" th:href="@{'/category/' + ${category.id} + '/show'}"
                        th:text="${category.description}">category 1</a>
                 </li>
             </ul>
