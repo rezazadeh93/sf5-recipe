@@ -70,12 +70,28 @@ class RecipeControllerTest {
         when(recipeService.saveRecipeCommand(any())).thenReturn(command);
 
         //then
-        mockMvc.perform(get("/recipe")
+        mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "")
                 .param("description", "test description")
         )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/" + New_POST_ID + "/show"));
+    }
+
+    @Test
+    void testGetUpdateView() throws Exception {
+        //given
+        RecipeCommand command = new RecipeCommand();
+        command.setId(New_POST_ID);
+
+        // when
+        when(recipeService.findCommandById(New_POST_ID)).thenReturn(command);
+
+        //then
+        mockMvc.perform(get("/recipe/" + New_POST_ID + "/update"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/recipeform"))
+                .andExpect(model().attributeExists("recipe"));
     }
 }

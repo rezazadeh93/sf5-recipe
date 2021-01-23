@@ -31,11 +31,15 @@
                             <th>ID</th>
                             <th>Description</th>
                             <th>Link</th>
+                            <th>Update</th>
                         </tr>
                         </thead>
                         <tr th:remove="all">
                             <td>1</td>
                             <td>Recipe title 1</td>
+                            <td>
+                                <a class="btn btn-secondary" href="#">view</a>
+                            </td>
                             <td>
                                 <a class="btn btn-secondary" href="#">view</a>
                             </td>
@@ -46,13 +50,19 @@
                             <td>
                                 <a class="btn btn-secondary" href="#">view</a>
                             </td>
+                            <td>
+                                <a class="btn btn-secondary" href="#">view</a>
+                            </td>
                         </tr>
                         <tr th:each="recipe: ${recipes}">
                             <!--/*@thymesVar id="recipe" type="com.spring5.recipe.domain.Recipe"*/-->
                             <td th:text="${recipe.id}">3</td>
                             <td th:text="${recipe.description}">Recipe title 3</td>
                             <td>
-                                <a class="btn btn-secondary" th:href="@{'/recipe/' + ${recipe.id} + '/show'}" href="#">view</a>
+                                <a class="btn btn-secondary" th:href="@{'/recipe/' + ${recipe.id} + '/show'}" href="#">show</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary" th:href="@{'/recipe/' + ${recipe.id} + '/update'}" href="#">update</a>
                             </td>
                         </tr>
                     </table>
