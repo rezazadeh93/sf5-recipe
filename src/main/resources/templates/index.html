@@ -32,6 +32,7 @@
                             <th>Description</th>
                             <th>Link</th>
                             <th>Update</th>
+                            <th>Delete</th>
                         </tr>
                         </thead>
                         <tr th:remove="all">
@@ -63,6 +64,9 @@
                             </td>
                             <td>
                                 <a class="btn btn-secondary" th:href="@{'/recipe/' + ${recipe.id} + '/update'}" href="#">update</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary" th:href="@{'/recipe/' + ${recipe.id} + '/delete'}" href="#">delete</a>
                             </td>
                         </tr>
                     </table>
