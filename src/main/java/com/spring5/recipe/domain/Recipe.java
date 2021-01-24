@@ -10,6 +10,7 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(exclude = {"categories", "notes", "ingredients"})
 @Entity
+@ToString(exclude = {"categories", "notes", "ingredients"})
 public class Recipe {
 
     @Id

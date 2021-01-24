@@ -3,6 +3,7 @@ package com.spring5.recipe.converters;
 import com.spring5.recipe.commands.IngredientCommand;
 import com.spring5.recipe.commands.UnitOfMeasureCommand;
 import com.spring5.recipe.domain.Ingredient;
+import com.spring5.recipe.domain.Recipe;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
@@ -26,6 +27,9 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
 
         final Ingredient ingredient = new Ingredient();
         ingredient.setId(source.getId());
+        Recipe recipe = new Recipe();
+        recipe.setId(source.getRecipeId());
+        ingredient.setRecipe(recipe);
         ingredient.setDescription(source.getDescription());
         ingredient.setAmount(source.getAmount());
         ingredient.setUom(uomConverter.convert(source.getUom()));
