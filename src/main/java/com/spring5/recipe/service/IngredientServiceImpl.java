@@ -72,7 +72,7 @@ public class IngredientServiceImpl implements IngredientService {
 
         Recipe recipe = recipeOpt.get();
 
-        Ingredient ingredientFound = recipe.findIngredientById(ingredientCommand.getId());
+        Ingredient ingredientFound = recipe.findIngredientByObj(ingredientCommand);
 
         if (ingredientFound != null) {
 
@@ -89,8 +89,28 @@ public class IngredientServiceImpl implements IngredientService {
         Recipe savedRecipe = recipeRepository.save(recipe);
 
         // @Todo check for fail
-        Ingredient returnedIngredient = savedRecipe.findIngredientById(ingredientCommand.getId());
+        // check by description that isn't unique property,
+        // it's not totally safe, but it's best guess
+        Ingredient returnedIngredient = savedRecipe.findIngredientByObj(ingredientCommand);
 
         return ingredientToIngredientCommand.convert(returnedIngredient);
+    }
+
+    @Override
+    public void deleteById(Long recipeId, Long id) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+
+        if (recipeOptional.isEmpty()) {
+            // @Todo return 404 error
+            log.error("ingredient service @delete => recipe id not found, id: " + recipeId);
+        }
+
+        Recipe recipe = recipeOptional.get();
+
+        log.debug("ingredient service @delete => deleting ingredient id: " + id);
+
+        recipe.getIngredients().removeIf(ingredient -> ingredient.getId().equals(id));
+
+        recipeRepository.save(recipe);
     }
 }

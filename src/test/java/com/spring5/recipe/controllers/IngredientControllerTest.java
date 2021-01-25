@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -77,6 +78,18 @@ class IngredientControllerTest {
     }
 
     @Test
+    void testGetNewRecipe() throws Exception {
+
+        when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
+
+        mockMvc.perform(get("/recipe/2/ingredient/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/ingredientform"))
+                .andExpect(model().attributeExists("uomList"))
+                .andExpect(model().attributeExists("ingredient"));
+    }
+
+    @Test
     void testUpdateRecipeIngredient() throws Exception {
         // given && when are together
         when(ingredientService.findCommandByRecipeAndIngredientId(anyLong(), anyLong()))
@@ -100,8 +113,21 @@ class IngredientControllerTest {
 
         when(ingredientService.saveIngredientCommand(any())).thenReturn(ingredientCommand);
 
-        mockMvc.perform(post("/recipe/3/ingredient/"))
+        mockMvc.perform(post("/recipe/3/ingredient/")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "")
+                .param("description", "test description")
+        )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/3/ingredient/4/show"));
+    }
+
+    @Test
+    void testDeleteIngredient() throws Exception {
+        mockMvc.perform(get("/recipe/2/ingredient/12/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/recipe/2/ingredients"));
+
+        verify(ingredientService, times(1)).deleteById(anyLong(), anyLong());
     }
 }

@@ -1,6 +1,8 @@
 package com.spring5.recipe.controllers;
 
 import com.spring5.recipe.commands.IngredientCommand;
+import com.spring5.recipe.commands.RecipeCommand;
+import com.spring5.recipe.commands.UnitOfMeasureCommand;
 import com.spring5.recipe.service.IngredientService;
 import com.spring5.recipe.service.RecipeService;
 import com.spring5.recipe.service.UnitOfMeasureService;
@@ -47,6 +49,23 @@ public class IngredientController {
     }
 
     @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/new")
+    public String newRecipe(@PathVariable String recipeId, Model model) {
+        //make sure we have a good id
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+        // @Todo raise an exception if null
+
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        ingredientCommand.setUom(new UnitOfMeasureCommand());
+
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
+        model.addAttribute("ingredient", ingredientCommand);
+
+        return "recipe/ingredient/ingredientform";
+    }
+
+    @GetMapping
     @RequestMapping("/recipe/{recipeId}/ingredient/{id}/update")
     public String updateRecipeIngredient(@PathVariable String recipeId,
                                          @PathVariable String id, Model model) {
@@ -68,5 +87,16 @@ public class IngredientController {
         log.debug("Ingredient controller => @saveOrUpdate: saved ingredient id: " + ingredientCommand.getId());
 
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/{id}/delete")
+    public String deleteById(@PathVariable String recipeId,
+                             @PathVariable String id) {
+        log.debug("ingredient controller: @deleteById => Recipe ID : " + id);
+
+        ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
+
+        return "redirect:/recipe/" + recipeId + "/ingredients";
     }
 }

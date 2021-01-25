@@ -1,5 +1,6 @@
 package com.spring5.recipe.domain;
 
+import com.spring5.recipe.commands.IngredientCommand;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,12 +67,26 @@ public class Recipe {
         return this;
     }
 
-    public Ingredient findIngredientById(Long id) {
+    public Ingredient findIngredientByObj(IngredientCommand command) {
         Set<Ingredient> ingredientSet = getIngredients();
 
         for (Ingredient ingredient: ingredientSet) {
-            if (ingredient.getId().equals(id)) {
-                return ingredient;
+            if (command.getId() != null) {
+
+                if (ingredient.getId().equals(command.getId())) {
+                    return ingredient;
+                }
+
+            } else {
+
+                // check by description that isn't unique property,
+                // it's not totally safe, but it's best guess
+                if (ingredient.getDescription().equals(command.getDescription()) &&
+                        ingredient.getAmount().equals(command.getAmount()) &&
+                        ingredient.getUom().getId().equals(command.getUom().getId())) {
+
+                    return ingredient;
+                }
             }
         }
 
