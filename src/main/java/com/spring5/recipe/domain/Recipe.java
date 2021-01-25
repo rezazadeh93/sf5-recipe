@@ -1,12 +1,14 @@
 package com.spring5.recipe.domain;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.naming.Name;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @Data
 @EqualsAndHashCode(exclude = {"categories", "notes", "ingredients"})
 @Entity
@@ -62,6 +64,20 @@ public class Recipe {
         this.ingredients.add(ingredient);
 
         return this;
+    }
+
+    public Ingredient findIngredientById(Long id) {
+        Set<Ingredient> ingredientSet = getIngredients();
+
+        for (Ingredient ingredient: ingredientSet) {
+            if (ingredient.getId().equals(id)) {
+                return ingredient;
+            }
+        }
+
+        log.error("Recipe Domain @findIngredientById => Ingredient Not Found: " + id);
+
+        return null;
     }
 
 }
