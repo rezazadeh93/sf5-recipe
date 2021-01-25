@@ -2,40 +2,41 @@ package com.spring5.recipe.service;
 
 import com.spring5.recipe.commands.IngredientCommand;
 import com.spring5.recipe.converters.IngredientToIngredientCommand;
+import com.spring5.recipe.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.spring5.recipe.domain.Ingredient;
 import com.spring5.recipe.domain.Recipe;
 import com.spring5.recipe.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class IngredientServiceImplTest {
     public static final long RECIPE_ID = 1L;
     public static final long INGREDIENT_ID = 2L;
 
+    IngredientToIngredientCommand ingredientToIngredientCommand;
+
     @Mock
     RecipeRepository recipeRepository;
 
-    @Mock
-    IngredientToIngredientCommand ingredientToIngredientCommand;
+    IngredientService ingredientService;
 
-    @InjectMocks
-    IngredientServiceImpl ingredientService;
+    //init converters
+    public IngredientServiceImplTest() {
+        this.ingredientToIngredientCommand = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
+    }
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, recipeRepository);
     }
 
     @Test

@@ -13,17 +13,18 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class IngredientServiceImpl implements IngredientService {
-    private final RecipeRepository recipeRepository;
-    private final IngredientToIngredientCommand ingredientToIngredientCommand;
 
-    public IngredientServiceImpl(RecipeRepository recipeRepository,
-                                 IngredientToIngredientCommand ingredientToIngredientCommand) {
-        this.recipeRepository = recipeRepository;
+    private final IngredientToIngredientCommand ingredientToIngredientCommand;
+    private final RecipeRepository recipeRepository;
+
+    public IngredientServiceImpl(IngredientToIngredientCommand ingredientToIngredientCommand,
+                                 RecipeRepository recipeRepository) {
         this.ingredientToIngredientCommand = ingredientToIngredientCommand;
+        this.recipeRepository = recipeRepository;
     }
 
     @Override
-    public IngredientCommand findCommandByRecipeAndIngredientId(Long recipeId, Long id) {
+    public IngredientCommand findCommandByRecipeAndIngredientId(Long recipeId, Long ingredientId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
 
         if (recipeOptional.isEmpty()) {
@@ -33,16 +34,17 @@ public class IngredientServiceImpl implements IngredientService {
 
         Recipe recipe = recipeOptional.get();
 
-        Ingredient ingredientCommandOptional = recipe.getIngredients()
+        Optional<IngredientCommand> ingredientCommandOptional = recipe.getIngredients()
                 .stream()
-                .filter(ingredient -> ingredient.getId().equals(id))
-                .findFirst().orElse(null);
+                .filter(ingredient -> ingredient.getId().equals(ingredientId))
+                .map(ingredientToIngredientCommand::convert)
+                .findFirst();
 
-        if (ingredientCommandOptional == null) {
+        if (ingredientCommandOptional.isEmpty()) {
             // @Todo Impl error 404 must handle
             log.error("Ingredient Service: Ingredient ID Not Found!");
         }
-        IngredientCommand command = ingredientToIngredientCommand.convert(ingredientCommandOptional);
-        return command;
+
+        return ingredientCommandOptional.get();
     }
 }

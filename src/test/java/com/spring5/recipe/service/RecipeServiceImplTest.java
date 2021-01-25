@@ -76,7 +76,7 @@ class RecipeServiceImplTest {
     @Test
     void testDeleteById() {
         //given
-        Long idToDelete = Long.valueOf(2L);
+        Long idToDelete = 2L;
         recipeService.deleteById(idToDelete);
 
         //no when, because of delete method is a void function
