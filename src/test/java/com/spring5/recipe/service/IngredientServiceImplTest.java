@@ -121,12 +121,13 @@ class IngredientServiceImplTest {
 
         recipe.addIngredient(ingredient1);
         recipe.addIngredient(ingredient2);
+        ingredient1.setRecipe(recipe);
+        ingredient2.setRecipe(recipe);
 
         when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
-        when(recipeRepository.save(any())).thenReturn(new Recipe());
 
         // when
-        ingredientService.deleteById(2L, 1L);
+        ingredientService.deleteById(2L, 2L);
 
         //then
         verify(recipeRepository, times(1)).findById(anyLong());
