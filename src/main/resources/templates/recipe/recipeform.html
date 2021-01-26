@@ -17,7 +17,7 @@
 </head>
 <body class="pt-5 mt-3 pb-4 bg-light">
 <div class="container">
-    <form th:object="${recipe}" th:action="@{/recipe}">
+    <form th:object="${recipe}" th:action="@{/recipe}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="row">
             <div class="col-12 col-lg-5 mb-5">
@@ -109,10 +109,13 @@
                                     <label for="exampleFormControlSelect2326">Difficulty</label>
                                 </div>
                                 <div class="col-9">
-                                    <select class="form-control"
-                                            id="exampleFormControlSelect2326">
-                                        <option>1</option>
-                                        <option>2</option>
+                                    <select class="form-control" id="exampleFormControlSelect2326"
+                                    th:field="*{difficulty}">
+                                        <option value="EASY" th:remove="all">EASY</option>
+                                        <option value="HARD"
+                                        th:each="item: ${T(com.spring5.recipe.domain.Difficulty).values()}"
+                                        th:text="${item.name()}"
+                                        th:value="${item.name()}">HARD</option>
                                     </select>
                                 </div>
                             </li>

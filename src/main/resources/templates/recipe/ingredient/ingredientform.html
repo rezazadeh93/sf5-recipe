@@ -24,7 +24,7 @@
                     <h4 class="card-title text-white mb-0">Ingredient</h4>
                 </div>
                 <div class="card-body">
-                    <form class="form-inline" th:object="${ingredient}"
+                    <form class="form-inline" method="post" th:object="${ingredient}"
                           th:action="@{'/recipe/' + ${recipeId} + '/ingredient'}">
                         <input type="hidden" th:field="*{id}">
                         <input type="text" class="form-control mb-2 mr-sm-2"
