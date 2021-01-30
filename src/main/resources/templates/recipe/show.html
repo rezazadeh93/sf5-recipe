@@ -32,8 +32,8 @@
                         <div class="col-12 col-md-5">
                             <figure class="figure text-center mb-0">
                                 <img class="rounded img-fluid"
-                                     src="/images/guacamole-768.jpg"
-                                     th:src="@{/images/guacamole-768.jpg}" alt="guacamole recipe image">
+                                     src="../../static/images/guacamole-768.jpg"
+                                     th:src="@{'/recipe/' + ${recipe.id} + '/recipeimage'}" alt="guacamole recipe image">
                                 <a class="d-block text-info font-weight-bold py-2" href="#"
                                    th:href="@{'/recipe/' + ${recipe.id} + '/image'}">update an image</a>
                             </figure>
