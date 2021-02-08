@@ -40,7 +40,9 @@ class RecipeControllerTest {
         recipe = new Recipe();
         recipe.setId(TEST_ID);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(recipeController)
+                .setControllerAdvice(new ControllerExceptionHandler())
+                .build();
     }
 
     @Test
