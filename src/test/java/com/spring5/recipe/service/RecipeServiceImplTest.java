@@ -3,6 +3,7 @@ package com.spring5.recipe.service;
 import com.spring5.recipe.converters.RecipeCommandToRecipe;
 import com.spring5.recipe.converters.RecipeToRecipeCommand;
 import com.spring5.recipe.domain.Recipe;
+import com.spring5.recipe.exception.NotFoundException;
 import com.spring5.recipe.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class RecipeServiceImplTest {
@@ -71,6 +71,16 @@ class RecipeServiceImplTest {
 
         verify(recipeRepository, times(1)).findAll();
         verify(recipeRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    void testFindByIdNotFound() {
+        //given
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when & then
+        // must catch Not Found Exception
+        assertThrows(NotFoundException.class, () -> recipeService.findById(1L));
     }
 
     @Test
